@@ -8,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 'test git'
-        run: pwd
+      - uses: actions/checkout@v3 
+      
+      - name: "login to docker hub"
+        run : docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TOKEN }}
+        
+      - name: "building docker image"
+        run : docker build -t ${{ secrets.DOCKER_USERNAME }}/myimage .
 
-      - name: 'test print'
-        run: echo norhan
-
-
+      - name: "push the image"
+        run : docker push ${{ secrets.DOCKER_USERNAME }}/myimage
